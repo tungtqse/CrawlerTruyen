@@ -14,6 +14,7 @@ namespace DataAccess.Models
         public int TotalChapter { get; set; }
         public Guid? AttachmentFileId { get; set; }
         public string Link { get; set; }
+        public string Source { get; set; }
         public virtual ICollection<Chapter> Chapters { get; set; }
         public virtual ICollection<Category> Categories { get; set; }
     }

@@ -13,7 +13,9 @@ namespace CrawlerTruyenCV
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        static void Main(string[] args)
+        static void Main(string[] args) => MainAsync(args).GetAwaiter().GetResult();
+
+        static async Task MainAsync(string[] args)
         {
             logger.Info("Starting program...");
 
@@ -25,7 +27,7 @@ namespace CrawlerTruyenCV
             //story.GetStoryContent("");
 
             StoryProcess story = new StoryProcess(dbContextScopeFactory);
-            story.Excute();
+            await story.Excute();
 
             logger.Info("Finish program.");
 

@@ -75,7 +75,10 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Scripts\InsertAuthor.sql" />
+    <Content Include="Scripts\InsertStory.sql" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{CC2B78C0-F2E9-43FD-BA04-18727FFFEE45}</Project>

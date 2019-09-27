@@ -8,8 +8,13 @@ namespace Core
 {
     public static class Constants
     {
-        public const string Url = "https://wikidich.com";
+        public const string UrlWiki = "https://wikidich.com";
+        public const string UrlTruyenCV = "http://truyencv.com";
+        public const string UrlTruyenYY = "https://truyenyy.com";
+        public const string UrlTTV = "https://truyen.tangthuvien.vn";
+
         public const string ConnectionString = "MainContext";
+        public const int MaxChapter = 100;
 
         public class BaseProperty
         {
@@ -31,10 +36,18 @@ namespace Core
 
         public class StoryProgressStatus
         {
-            public const string Completed = "Hoàn thành";
-            public const string Pending = "Tạm dừng";
-            public const string Dropped = "Bỏ dở";
-            public const string Processing = "Đang ra";
+            public const string Completed = "Completed";
+            public const string Pending = "Pending";
+            public const string Dropped = "Dropped";
+            public const string Processing = "Processing";
+        }
+
+        public class Source
+        {
+            public const string WikiDich = "WikiDich";
+            public const string TruyenCV = "TruyenCV";
+            public const string TruyenYY = "TruyenYY";
+            public const string TangThuVien = "TangThuVien";
         }
     }
 }

@@ -19,9 +19,9 @@ namespace CrawlerTruyenCV.Business
                 OverrideEncoding = Encoding.UTF8  //Set UTF8 để hiển thị tiếng Việt            
             };
 
-            var url = Constants.Url;
+            var url = Constants.UrlWiki;
 
-            HtmlDocument document = htmlWeb.Load(Constants.Url);
+            HtmlDocument document = htmlWeb.Load(Constants.UrlWiki);
 
             var thread = document.DocumentNode.QuerySelectorAll("div#content").FirstOrDefault();
             var content = thread.QuerySelector("blockquote.postcontent");

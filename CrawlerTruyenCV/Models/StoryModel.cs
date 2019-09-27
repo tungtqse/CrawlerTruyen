@@ -14,5 +14,6 @@ namespace CrawlerTruyenCV.Models
         public int TotalChapter { get; set; }
         public string Link { get; set; }
         public bool StatusId { get; set; }
+        public string Source { get; set; }
     }
 }

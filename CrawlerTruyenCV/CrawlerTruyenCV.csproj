@@ -154,6 +154,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Crawlers\CrawlerFromTruyenCV.cs" />
+    <Compile Include="Business\Crawlers\CrawlerFromTruyenYY.cs" />
+    <Compile Include="Business\Crawlers\CrawlerFromWiki.cs" />
     <Compile Include="Business\GetAuthor.cs" />
     <Compile Include="Business\ChapterProcess.cs" />
     <Compile Include="Business\GetStory.cs" />

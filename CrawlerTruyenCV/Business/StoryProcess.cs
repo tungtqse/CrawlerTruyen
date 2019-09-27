@@ -22,44 +22,86 @@ namespace CrawlerTruyenCV.Business
             _scopeFactory = scopeFactory;
         }
 
-        public void Excute()
+        public async Task Excute()
         {
-            Console.WriteLine("Getting stories from db...");
             logger.Info("Getting stories from db...");
 
-            using (var scope = _scopeFactory.Create())
-            {
-                var context = scope.DbContexts.Get<MainContext>();
+            var stories = new List<StoryModel>();
 
-                var stories = context.Set<Story>().Where(f => f.StatusId && (f.ProgressStatus == Constants.StoryProgressStatus.Processing
-                                                        || f.ProgressStatus == Constants.StoryProgressStatus.Pending)
-                                                        && !string.IsNullOrEmpty(f.Link))
-                                                  .Select(s => new StoryModel()
-                                                  {
-                                                      Id = s.Id,
-                                                      Name = s.Name,
-                                                      Link = s.Link,
-                                                      TotalChapter = s.TotalChapter
-                                                  }).ToList();
+            try
+            {
+                #region Excute Crawler
+
+                using (var scope = _scopeFactory.Create())
+                {
+                    var context = scope.DbContexts.Get<MainContext>();
+
+                    stories = context.Set<Story>().Where(f => f.StatusId && (f.ProgressStatus == Constants.StoryProgressStatus.Processing
+                                                            || f.ProgressStatus == Constants.StoryProgressStatus.Pending)
+                                                            && !string.IsNullOrEmpty(f.Link))
+                                                      .Select(s => new StoryModel()
+                                                      {
+                                                          Id = s.Id,
+                                                          Name = s.Name,
+                                                          Link = s.Link,
+                                                          TotalChapter = s.TotalChapter,
+                                                          Source = s.Source
+                                                      }).ToList();                    
+                }
 
                 if (stories != null && stories.Count > 0)
                 {
                     logger.Info($"Get total: {stories.Count} stories");
 
-                    ChapterProcess chapter = new ChapterProcess(_scopeFactory);
+                    // ***Create a query that, when executed, returns a collection of tasks.
+                    IEnumerable<Task> crawlerTasksQuery = from story in stories select CrawlerChapter(story);
 
-                    foreach (var story in stories)
-                    {
-                        chapter.Excute(story);
-                    }
+                    // ***Use ToList to execute the query and start the tasks.
+                    List<Task> crawlerTasks = crawlerTasksQuery.ToList();
+
+                    // Await the completion of all the running tasks.
+                    await Task.WhenAll(crawlerTasks);
+
+
+                    // ***Add a loop to process the tasks one at a time until none remain.
+                    //while (crawlerTasks.Count > 0)
+                    //{
+                    //    // Identify the first task that completes.
+                    //    Task firstFinishedTask = await Task.WhenAny(crawlerTasks);
+
+                    //    // ***Remove the selected task from the list so that you don't
+                    //    // process it more than once.
+                    //    crawlerTasks.Remove(firstFinishedTask);
+
+                    //    // Await the completed task.
+                    //    await firstFinishedTask;                        
+                    //}
+
+                    //foreach (var story in stories)
+                    //{
+                    //    chapter.Excute(story);
+                    //}
                 }
                 else
                 {
                     logger.Info("Not found valid story.");
-                }
+                }              
 
-                scope.SaveChanges();
+                logger.Info("Finish Crawler.");
+
+                #endregion
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }            
+        }
+
+        private async Task CrawlerChapter(StoryModel story)
+        {
+            ChapterProcess chapter = new ChapterProcess(_scopeFactory);
+
+            await chapter.Excute(story);
         }
     }
 }

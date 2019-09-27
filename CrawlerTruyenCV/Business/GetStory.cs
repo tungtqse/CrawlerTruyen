@@ -32,7 +32,7 @@ namespace CrawlerTruyenCV.Business
                 OverrideEncoding = Encoding.UTF8  //Set UTF8 để hiển thị tiếng Việt            
             };
 
-            var url = Constants.Url + "/truyen/tay-du-to-lon-giai-tri-gia-W1mDAlS4CBRxQwES#!/";
+            var url = Constants.UrlWiki + "/truyen/tay-du-to-lon-giai-tri-gia-W1mDAlS4CBRxQwES#!/";
 
             HtmlDocument document = htmlWeb.Load(url);
 
@@ -45,7 +45,7 @@ namespace CrawlerTruyenCV.Business
             list.Add(new ChapterModel()
             {
                 Title = titleFirst,
-                Link = Constants.Url + linkFirst
+                Link = Constants.UrlWiki + linkFirst
             });
 
             ProcessChapters(list);
@@ -84,7 +84,7 @@ namespace CrawlerTruyenCV.Business
 
             if (!string.IsNullOrEmpty(linkNextChapter))
             {
-                var url = Constants.Url + linkNextChapter;
+                var url = Constants.UrlWiki + linkNextChapter;
 
                 var link = GetChapterContent(list, url);
 
@@ -126,7 +126,7 @@ namespace CrawlerTruyenCV.Business
 
                 if (!string.IsNullOrEmpty(linkNextChapter))
                 {
-                    return (Constants.Url + linkNextChapter);
+                    return (Constants.UrlWiki + linkNextChapter);
                 }
             }
             catch(Exception ex)
